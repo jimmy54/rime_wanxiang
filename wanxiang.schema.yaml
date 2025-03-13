@@ -38,9 +38,6 @@ switches:
     states: [ 简, 繁 ]
   - name: full_shape
     states: [ 半, 全 ]
-  - name: super_tips
-    states: [ off, tips ]
-    reset: 1
   - name: emoji
     states: [ 💀, 😄 ]
     reset: 0
@@ -55,6 +52,9 @@ switches:
   - name: charset_filter
     states: [ 小, 大 ]
     reset: 0
+  - name: super_tips
+    states: [ off, tips ]
+    reset: 1
   - name: search_single_char  # search.lua 的功能开关，辅码查词时是否单字优先
     states: [词, 单]
 
