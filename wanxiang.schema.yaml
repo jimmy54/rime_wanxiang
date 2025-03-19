@@ -55,6 +55,9 @@ switches:
   - name: super_tips
     states: [ off, tips ]
     reset: 1
+  - name: prediction
+    states: [ 测, 预 ]
+    reset: 0
   - name: search_single_char  # search.lua 的功能开关，辅码查词时是否单字优先
     states: [词, 单]
 
@@ -62,6 +65,7 @@ switches:
 # 输入引擎
 engine:
   processors:
+    - predictor
     - lua_processor@*select_character          # 以词定字
     - lua_processor@*cold_word_drop.processor
     - lua_processor@*quick_symbol_text    #快符引导以及重复上屏
@@ -86,6 +90,7 @@ engine:
     - punct_segmentor
     - fallback_segmentor
   translators:
+    - predict_translator
     - punct_translator
     - script_translator
     - lua_translator@*shijian            #农历、日期、节气、时间、周等等
@@ -115,7 +120,16 @@ engine:
     - lua_filter@*super_comment                     #超级注释模块，支持错词提示、辅助码显示，部件组字读音注释，支持个性化配置和关闭相应的功能，详情搜索super_comment进行详细配置
     - uniquifier                                    # 去重
 
-
+predictor:
+  db: wanxiang-lts-zh-predict.db
+# 每次最大预测候选数
+# 默认为 0，表示显示所有候选数
+# 您可以将其设置为与 page_size 相同，这样 period 就不会触发下一页
+  max_candidates: 5
+# 最大连续预测次数
+# 默认为 0，表示无限制
+  max_iterations: 1
+  
 #shijian:仅仅作为提示使用，编码已经写死，引导适应性更高，如有需求lua中修改
 #时间：osj 或者 /sj
 #日期：orq 或者 /rq
